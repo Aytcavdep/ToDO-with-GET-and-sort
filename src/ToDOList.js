@@ -11,7 +11,7 @@ function ToDOList({ todo, handleChangeCompleted, removeTitle }) {
         className={completed ? "item-text strike" : "item-text"}
         onClick={() => handleChangeCompleted(id)}
       >
-        User name {userId} <br/>
+        User name {userId} <br />
         {title}
       </div>
 
