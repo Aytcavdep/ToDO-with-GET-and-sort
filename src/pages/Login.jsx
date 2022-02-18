@@ -13,24 +13,16 @@ export default function Login() {
     console.log(data);
     setIsAuth(true);
     localStorage.setItem("auth", "true");
-    localStorage.setItem("userId", data.userId);
-    localStorage.setItem("firstName", data.firstName);
+    localStorage.setItem("userName", data.userName);
+    localStorage.setItem("password", data.password);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("firstName")} placeholder="Введите имя" />
-      <select {...register("userId")}>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
+      <input {...register("password")} placeholder="Введите пароль" />
+      <select {...register("userName")}>
+        <option value="Vladimir">Vladimir</option>
+        <option value="Valdemar">Valdemar</option>
       </select>
       <input type="submit" />
     </form>

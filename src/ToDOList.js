@@ -1,7 +1,7 @@
 import TForm from "./TForm";
 
 function ToDOList({ todo, handleChangeCompleted, removeTitle }) {
-  const { id, title, completed, userId } = todo;
+  const { id, title, completed, userName, date } = todo;
   const handleRemove = () => {
     removeTitle(id);
   };
@@ -11,7 +11,8 @@ function ToDOList({ todo, handleChangeCompleted, removeTitle }) {
         className={completed ? "item-text strike" : "item-text"}
         onClick={() => handleChangeCompleted(id)}
       >
-        User name {userId} <br />
+        {date} <br />
+        {userName} <br />
         {title}
       </div>
 

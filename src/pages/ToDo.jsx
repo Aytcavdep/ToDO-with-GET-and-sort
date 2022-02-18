@@ -5,21 +5,32 @@ import ToDoListService from "../API/ToDoListService";
 import Loader from "../UI/Loader";
 import { useFetching } from "../hooks/useFetching";
 import Login from "./Login";
+import axios from "axios";
 
+let dateNew = "";
 function ToDo() {
   const [todos, setTodos] = useState([]);
 
-  const [currentUser, setCurrentUser] = useState(localStorage.getItem('userId'));
+  const [currentUser, setCurrentUser] = useState(
+    localStorage.getItem("userName")
+  );
+  const addDate = (dateForm) => {
+    dateNew = dateForm;
+  };
 
   const addTitle = (userInput) => {
-    if (userInput) {
+    if (userInput && dateNew) {
+      console.log(dateNew);
       const newItem = {
-        userId: localStorage.getItem('userId'),
+        userName: localStorage.getItem("userName"),
         id: Math.random().toString(36).substring(2, 9),
         title: userInput,
         completed: false,
+        date: dateNew,
       };
       setTodos([...todos, newItem]);
+
+      ToDoListService.createTask(newItem);
     }
   };
 
@@ -28,17 +39,18 @@ function ToDo() {
       const responce = await ToDoListService.getAll(currentUser);
       setTodos([
         ...todos,
-        ...responce.data.filter((todo) => todo.userId == currentUser),
+        ...responce.data /*.filter((todo) => todo.userName == currentUser)*/,
       ]);
     }
   );
 
   useEffect(() => {
-    fetchToDo(localStorage.getItem('userId'));
-  }, [localStorage.getItem('userId')]);
+    fetchToDo(localStorage.getItem("userName"));
+  }, [localStorage.getItem("userName")]);
 
   const removeTitle = (id) => {
     setTodos([...todos.filter((todo) => todo.id !== id)]);
+    ToDoListService.deleteTask(id);
   };
 
   const handleChangeCompleted = (id) => {
@@ -47,6 +59,7 @@ function ToDo() {
         todo.id == id ? { ...todo, completed: !todo.completed } : { ...todo }
       ),
     ]);
+    ToDoListService.upTask(id);
   };
 
   const date = new Date();
@@ -61,11 +74,11 @@ function ToDo() {
     <div className="App">
       <header>
         <h1>
-        {localStorage.getItem('firstName')} <br/>
+          {localStorage.getItem("userName")} <br />
           Список задач {dayOfMonth}.{month}.{year}
         </h1>
       </header>
-      <TForm addTitle={addTitle} />
+      <TForm addTitle={addTitle} addDate={addDate} />
       <h1>Задачи: {todos.length}</h1>
       {todos.map((todo) => {
         if (!todo.completed) {
