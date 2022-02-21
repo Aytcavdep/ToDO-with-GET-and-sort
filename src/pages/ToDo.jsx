@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ToDOList from "../ToDOList";
 import TForm from "../TForm";
 import ToDoListService from "../API/ToDoListService";
@@ -7,11 +7,25 @@ import { useFetching } from "../hooks/useFetching";
 import Login from "./Login";
 import axios from "axios";
 import MySelect from "../UI/MySelect";
+import TodoFilter from "../UI/TodoFilter";
 
 let dateNew = "";
 function ToDo() {
   const [todos, setTodos] = useState([]);
-  const [selectedSort, setSelectedSort] = useState("");
+  const [filter, setFilter] = useState({ sort: "", query: "" });
+  const sortedTodos = useMemo(() => {
+    console.log("отработала функция");
+    if (filter.sort) {
+      return [...todos].sort((a, b) =>
+        a[filter.sort].localeCompare(b[filter.sort])
+      );
+    }
+    return todos;
+  }, [filter.sort, todos]);
+
+  const sortedAndSearchedTodos = useMemo(() => {
+    return sortedTodos.filter((todo) => todo.date.includes(filter.query));
+  }, [filter.query, sortedTodos]);
 
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("userName")
@@ -34,10 +48,6 @@ function ToDo() {
 
       ToDoListService.createTask(newItem);
     }
-  };
-  const sortTask = (sort) => {
-    setSelectedSort(sort);
-    setTodos([...todos].sort((a, b) => a[sort].localeCompare(b[sort])));
   };
 
   const [fetchToDo, isToDoLoading, toDoError] = useFetching(
@@ -87,18 +97,8 @@ function ToDo() {
       <TForm addTitle={addTitle} addDate={addDate} />
       <h1>Задачи: {todos.length}</h1>
       <hr style={{ margin: "15 px 0" }} />
-      <div>
-        <MySelect
-          value={selectedSort}
-          onChange={sortTask}
-          defaultValue="Сортировка по..."
-          options={[
-            { value: "date", name: "По дате" },
-            { value: "title", name: "По содержанию" },
-          ]}
-        />
-      </div>
-      {todos.map((todo) => {
+      <TodoFilter filter={filter} setFilter={setFilter} />
+      {sortedAndSearchedTodos.map((todo) => {
         if (!todo.completed) {
           return (
             <ToDOList
@@ -111,7 +111,7 @@ function ToDo() {
         }
       })}
 
-      {todos.map((todo) => {
+      {sortedAndSearchedTodos.map((todo) => {
         if (todo.completed) {
           return (
             <ToDOList
