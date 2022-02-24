@@ -1,13 +1,30 @@
 import MySelect from "./MySelect";
+import { Button, DatePicker, Space, Tooltip } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 
 const TodoFilter = ({ filter, setFilter }) => {
+  function setDateOn(date, dateString) {
+    setFilter({ ...filter, queryOn: dateString });
+  }
+  function setDateOff(date, dateString) {
+    setFilter({ ...filter, queryOff: dateString });
+  }
+
   return (
     <div>
-      <input
-        value={filter.query}
-        onChange={(e) => setFilter({ ...filter, query: e.target.value })}
-        placeholder="Поиск..."
-      />
+      <div>
+        <h2>Фильтр по дате</h2>
+        <br />
+        <Space direction="vertical">
+          <DatePicker onChange={setDateOn} />
+        </Space>
+        <br />
+        <Space direction="vertical">
+          <DatePicker onChange={setDateOff} />
+        </Space>
+      </div>
+      <br />
+
       <MySelect
         value={filter.sort}
         onChange={(selectedSort) =>

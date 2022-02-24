@@ -12,7 +12,7 @@ import TodoFilter from "../UI/TodoFilter";
 let dateNew = "";
 function ToDo() {
   const [todos, setTodos] = useState([]);
-  const [filter, setFilter] = useState({ sort: "", query: "" });
+  const [filter, setFilter] = useState({ sort: "", queryOn: "", queryOff: "" });
   const sortedTodos = useMemo(() => {
     console.log("отработала функция");
     if (filter.sort) {
@@ -24,8 +24,22 @@ function ToDo() {
   }, [filter.sort, todos]);
 
   const sortedAndSearchedTodos = useMemo(() => {
-    return sortedTodos.filter((todo) => todo.date.includes(filter.query));
-  }, [filter.query, sortedTodos]);
+    if (filter.queryOn && filter.queryOff) {
+      return sortedTodos.filter(
+        (todo) => filter.queryOn <= todo.date && todo.date <= filter.queryOff
+      );
+    }
+
+    if (filter.queryOn) {
+      return sortedTodos.filter((todo) => filter.queryOn <= todo.date);
+    }
+
+    if (filter.queryOff) {
+      return sortedTodos.filter((todo) => todo.date <= filter.queryOff);
+    }
+
+    return sortedTodos;
+  }, [filter.queryOn, filter.queryOff, sortedTodos]);
 
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("userName")
@@ -95,7 +109,7 @@ function ToDo() {
         </h1>
       </header>
       <TForm addTitle={addTitle} addDate={addDate} />
-      <h1>Задачи: {todos.length}</h1>
+      <h1>Задачи: {sortedAndSearchedTodos.length}</h1>
       <hr style={{ margin: "15 px 0" }} />
       <TodoFilter filter={filter} setFilter={setFilter} />
       {sortedAndSearchedTodos.map((todo) => {
