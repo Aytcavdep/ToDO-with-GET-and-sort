@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-.App .item-todo {
+.item-todo {
   padding: 14px;
   width: 250px;
   margin: 0 auto;
@@ -19,10 +19,14 @@
   cursor: pointer;
 }
 
+
+
 .App .item-todo .item-text {
   display: inline-block;
   cursor: pointer;
 }
+
+
 
 .App input {
   padding: 14px 32px 14px 16px;
@@ -57,8 +61,33 @@
   bottom: 5px;
 }
 
+.item-week {
+  background: linear-gradient(
+    90deg,
+    rgb(219, 165, 16) 0%,
+    rgba(155, 0, 250, 1) 100%
+  );
+}
+
+.item-lost {
+  background: linear-gradient(
+    90deg,
+    rgb(228, 69, 21) 0%,
+    rgba(155, 0, 250, 1) 100%
+  );
+}
+
+.item-completed {
+  background: linear-gradient(
+    90deg,
+    rgb(22, 99, 25) 0%,
+    rgb(0, 152, 163) 100%
+  );
+}
+
 .strike {
   text-decoration: line-through;
+
 }
 
 @import '~antd/dist/antd.css';
