@@ -8,6 +8,7 @@ import Login from "./Login";
 import axios from "axios";
 import MySelect from "../UI/MySelect";
 import TodoFilter from "../UI/TodoFilter";
+import Modal from "../UI/Modal";
 
 let dateNew = "";
 function ToDo() {
@@ -40,6 +41,7 @@ function ToDo() {
 
     return sortedTodos;
   }, [filter.queryOn, filter.queryOff, sortedTodos]);
+  const [modal, setModal] = useState(false);
 
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("userName")
@@ -61,6 +63,7 @@ function ToDo() {
       setTodos([...todos, newItem]);
 
       ToDoListService.createTask(newItem);
+      setModal(false);
     }
   };
 
@@ -108,7 +111,11 @@ function ToDo() {
           Список задач {dayOfMonth}.{month}.{year}
         </h1>
       </header>
-      <TForm addTitle={addTitle} addDate={addDate} />
+      <button onClick={() => setModal(true)}>Создать задачу</button>
+      <Modal visible={modal} setVisible={setModal}>
+        <TForm addTitle={addTitle} addDate={addDate} />
+      </Modal>
+
       <h1>Задачи: {sortedAndSearchedTodos.length}</h1>
       <hr style={{ margin: "15 px 0" }} />
       <TodoFilter filter={filter} setFilter={setFilter} />
