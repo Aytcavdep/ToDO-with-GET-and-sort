@@ -1,7 +1,8 @@
-import TForm from "./TForm";
+import { CloseCircleTwoTone } from "@ant-design/icons";
 
 function ToDOList({ todo, handleChangeCompleted, removeTitle }) {
   const { id, title, completed, userName, date } = todo;
+
   const dateNow = new Date();
   let dayOfMonth = dateNow.getDate();
   let month = dateNow.getMonth() + 1;
@@ -9,8 +10,7 @@ function ToDOList({ todo, handleChangeCompleted, removeTitle }) {
   month = month < 10 ? "0" + month : month;
   dayOfMonth = dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth;
   let dateOn = `${year}-${month}-${dayOfMonth}`;
-  let dateOff = `${year}-${month}-${dayOfMonth + 7}`;
-  console.log(dateOn);
+  let dateOff = `${year}-${month}-${Number(dayOfMonth) + 7}`;
 
   const handleRemove = () => {
     removeTitle(id);
@@ -30,14 +30,19 @@ function ToDOList({ todo, handleChangeCompleted, removeTitle }) {
       <div
         className={completed ? "item-text strike" : "item-text"}
         onClick={() => handleChangeCompleted(id)}
+        style={{
+          display: "grid",
+          justifyContent: "space-between",
+          gridTemplateColumns: "200px 200px",
+        }}
       >
-        {date} <br />
-        {userName} <br />
-        {title}
+        <div style={{ justifySelf: "left" }}>{date}</div>
+        <div style={{ justifySelf: "right" }}>{userName}</div>
       </div>
+      {title}
 
       <div className="item-delete" onClick={handleRemove}>
-        X
+        <CloseCircleTwoTone />
       </div>
     </div>
   );

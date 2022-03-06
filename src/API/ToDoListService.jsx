@@ -2,13 +2,16 @@ import axios from "axios";
 
 export default class ToDoListService {
   static async getAll(currentUser) {
-    const responce = await axios.get("http://localhost:3001/tasks", {
-      params: {
-        userName: currentUser,
-      },
-    });
+    if (currentUser) {
+      const responce = await axios.get("http://localhost:3001/tasks", {
+        params: {
+          userName: currentUser,
+        },
+      });
 
-    return responce;
+      return responce;
+    }
+    return [];
   }
 
   static async createTask(newItem) {
@@ -23,5 +26,11 @@ export default class ToDoListService {
     const responce = await axios.get(`http://localhost:3001/tasks/` + id);
     responce.data.completed = !responce.data.completed;
     await axios.put(`http://localhost:3001/tasks/` + id, responce.data);
+  }
+
+  static async loginUser(currentUser) {
+    const responce = await axios.get("http://localhost:3001/registerUser");
+
+    return responce;
   }
 }

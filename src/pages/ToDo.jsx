@@ -4,18 +4,16 @@ import TForm from "../TForm";
 import ToDoListService from "../API/ToDoListService";
 import Loader from "../UI/Loader";
 import { useFetching } from "../hooks/useFetching";
-import Login from "./Login";
-import axios from "axios";
-import MySelect from "../UI/MySelect";
 import TodoFilter from "../UI/TodoFilter";
-import Modal from "../UI/Modal";
+import Modalwindow from "../UI/Modal";
+import { Button } from "antd";
+import { PlusCircleTwoTone } from "@ant-design/icons";
 
 let dateNew = "";
 function ToDo() {
   const [todos, setTodos] = useState([]);
   const [filter, setFilter] = useState({ sort: "", queryOn: "", queryOff: "" });
   const sortedTodos = useMemo(() => {
-    console.log("отработала функция");
     if (filter.sort) {
       return [...todos].sort((a, b) =>
         a[filter.sort].localeCompare(b[filter.sort])
@@ -52,7 +50,6 @@ function ToDo() {
 
   const addTitle = (userInput) => {
     if (userInput && dateNew) {
-      console.log(dateNew);
       const newItem = {
         userName: localStorage.getItem("userName"),
         id: Math.random().toString(36).substring(2, 9),
@@ -70,10 +67,7 @@ function ToDo() {
   const [fetchToDo, isToDoLoading, toDoError] = useFetching(
     async (currentUser) => {
       const responce = await ToDoListService.getAll(currentUser);
-      setTodos([
-        ...todos,
-        ...responce.data /*.filter((todo) => todo.userName == currentUser)*/,
-      ]);
+      setTodos([...todos, ...responce.data]);
     }
   );
 
@@ -106,17 +100,19 @@ function ToDo() {
   return (
     <div className="App">
       <header>
-        <h1>
+        <h1 style={{ marginLeft: "auto", marginRight: "auto" }}>
           {localStorage.getItem("userName")} <br />
-          Список задач {dayOfMonth}.{month}.{year}
+          Список задач {dayOfMonth}.{month}.{year} <br />
+          Всего задач: {sortedAndSearchedTodos.length}
         </h1>
       </header>
-      <button onClick={() => setModal(true)}>Создать задачу</button>
-      <Modal visible={modal} setVisible={setModal}>
+      <Button icon={<PlusCircleTwoTone />} onClick={() => setModal(true)}>
+        Создать задачу
+      </Button>
+      <Modalwindow visible={modal} setVisible={setModal}>
         <TForm addTitle={addTitle} addDate={addDate} />
-      </Modal>
+      </Modalwindow>
 
-      <h1>Задачи: {sortedAndSearchedTodos.length}</h1>
       <hr style={{ margin: "15 px 0" }} />
       <TodoFilter filter={filter} setFilter={setFilter} />
       {sortedAndSearchedTodos.map((todo) => {

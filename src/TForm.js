@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { DatePicker, Space } from "antd";
+import { DatePicker, Space, Button, Input } from "antd";
 import "antd/dist/antd.css";
+import { CheckCircleTwoTone } from "@ant-design/icons";
 
 function TForm({ addTitle, addDate }) {
   const [userInput, setUserInput] = useState("");
@@ -28,8 +29,16 @@ function TForm({ addTitle, addDate }) {
   }
 
   return (
-    <form onSubmit={submitForm}>
-      <input
+    <form
+      style={{
+        display: "grid",
+        gridTemplateColumns: 475,
+        justifyItems: "center",
+        rowGap: 25,
+      }}
+      onSubmit={submitForm}
+    >
+      <Input
         value={userInput}
         type="text"
         onChange={saveKeyInput}
@@ -39,7 +48,13 @@ function TForm({ addTitle, addDate }) {
       <Space direction="vertical">
         <DatePicker onChange={setDate} />
       </Space>
-      <button>Сохранить</button>
+      <Button
+        icon={<CheckCircleTwoTone />}
+        style={{ width: 150 }}
+        htmlType="submit"
+      >
+        Сохранить
+      </Button>
     </form>
   );
 }

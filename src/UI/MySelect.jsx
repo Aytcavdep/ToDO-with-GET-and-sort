@@ -1,16 +1,38 @@
+import { Select } from 'antd';
+import 'antd/dist/antd.css';
+
+const { Option } = Select;
+
+
 const MySelect = ({ options, defaultValue, value, onChange }) => {
   return (
-    <select value={value} onChange={(event) => onChange(event.target.value)}>
-      <option disabled value="">
-        {defaultValue}
-      </option>
+    <Select showSearch
+    size='small'
+    allowClear='true'
+    placeholder="Выберете тип сортировки"
+    optionFilterProp="children"
+    value={value} onChange={(value) => onChange(value)}>
+    <Option defaultActiveFirstOption="true" disabled value="">
+    {defaultValue}
+    </Option>
       {options.map((option) => (
-        <option key={option.value} value={option.value}>
+        <Option key={option.value} value={option.value}>
           {option.name}
-        </option>
+        </Option>
       ))}
-    </select>
+    </Select>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
 
 export default MySelect;

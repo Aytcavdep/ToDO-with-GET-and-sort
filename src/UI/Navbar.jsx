@@ -1,6 +1,7 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
 import { AuthContext } from "../context/index";
+import { Button } from "antd";
+import { LoginOutlined } from "@ant-design/icons";
 
 const Navbar = () => {
   const { isAuth, setIsAuth } = useContext(AuthContext);
@@ -8,12 +9,16 @@ const Navbar = () => {
     setIsAuth(false);
     localStorage.removeItem("auth");
     localStorage.removeItem("userId");
-    localStorage.removeItem("firstName");
+    localStorage.removeItem("userName");
   };
-  return (
+  return isAuth ? (
     <div className="navbar">
-      <button onClick={logout}>Выйти</button>
+      <Button type="primary" icon={<LoginOutlined />} onClick={logout}>
+        Выйти
+      </Button>
     </div>
+  ) : (
+    ""
   );
 };
 

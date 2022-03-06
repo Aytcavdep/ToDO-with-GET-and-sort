@@ -1,16 +1,29 @@
-import cl from "./Modal.module.css";
-const Modal = ({ children, visible, setVisible }) => {
-  const rootClasses = [cl.modal];
-  if (visible) {
-    rootClasses.push(cl.active);
-  }
+import 'antd/dist/antd.css';
+import { Modal} from 'antd';
+
+const Modalwindow = ({ children, visible, setVisible }) => {
+  const showModal = () => {
+    setVisible(true);
+  };
+
+  const handleOk = () => {
+    setVisible(false);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
   return (
-    <div className={rootClasses.join(" ")} onClick={() => setVisible(false)}>
-      <div className={cl.modalContent} onClick={(e) => e.stopPropagation()}>
+    <Modal footer={null} title="Создать задачу" visible={visible} onOk={handleOk} onCancel={handleCancel}>
+    
         {children}
-      </div>
-    </div>
+      
+    </Modal>
   );
 };
 
-export default Modal;
+
+
+
+
+export default Modalwindow;

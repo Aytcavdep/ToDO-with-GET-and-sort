@@ -2,7 +2,6 @@ import Login from "../pages/Login";
 import ToDo from "../pages/ToDo";
 
 export const privateRoutes = [
-  //  {path: '/login', element: <Login/>, exact: true},
   { path: "/todolist", element: <ToDo />, exact: true },
   { path: "*", element: <ToDo />, exact: true },
 ];

@@ -1,6 +1,5 @@
 import MySelect from "./MySelect";
-import { Button, DatePicker, Space, Tooltip } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { DatePicker, Space } from "antd";
 
 const TodoFilter = ({ filter, setFilter }) => {
   function setDateOn(date, dateString) {
@@ -13,7 +12,7 @@ const TodoFilter = ({ filter, setFilter }) => {
   return (
     <div>
       <div>
-        <h2>Фильтр по дате</h2>
+        <h2>Выберете дату для фильтрации</h2>
         <br />
         <Space direction="vertical">
           <DatePicker onChange={setDateOn} />
